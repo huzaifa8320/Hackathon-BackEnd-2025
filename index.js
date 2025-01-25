@@ -2,11 +2,13 @@ import express from 'express';
 import 'dotenv/config'
 import mongoose from 'mongoose';
 import authRoutes from './routers/auth.js';
+import myInfoRoutes from "./routers/user.js"
 import sendResponse from './helpers/sendResponse.js';
 import cors from 'cors';
+import { authenticateUser } from './middleware/middleware.js';
 
 const app = express();
-const PORT = 3000;
+const PORT = 8000;
 app.use(express.json())
 app.use(cors());
 
@@ -15,6 +17,7 @@ app.get('/', (req, res) => {
   sendResponse(res, 200, null, false, "Server is running");
 });
 app.use('/auth' , authRoutes)
+app.use('/user' , authenticateUser , myInfoRoutes)
 
 
 mongoose.connect(process.env.MONGODBURI)
